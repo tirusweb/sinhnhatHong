@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <style>
+        body {
+            background: url("../img/backlogin.jpg");
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .login-container {
+            padding: 20px;
+            width: 300px;
+            margin-top: 10%;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #fff;
+        }
+        .login-container h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .login-container input {
+            display: block;
+            width: 90%;
+            margin: 12px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .login-container button {
+            width: 100px;
+            margin: 12px auto;
+            padding: 10px;
+            background:linear-gradient(to right, #4facfe,#00f2fe);
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s, width 0.3s;
+        }
+        .login-container button:hover {
+            background:linear-gradient(to right, #4facfe,#00f2fe);
+        }
+        .btn-login {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            position: relative;
+        }
+        .btn-exit {
+            background: #ff0000;
+            transition: top 0.2s, left 0.2s;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>LOCK LOVE</h1>
+        <form id="loginForm">
+            <input type="date" id="username" placeholder="Ngày sinh của em" required />
+            <input type="text" id="password" placeholder="Loại quả mà Hiếu thích nhất là ??" required />
+            <div class="btn-login">
+                <button type="submit" id="loginBtn">Xác Nhận</button>
+                <button type="button" id="exitBtn" class="btn-exit">Chê</button>
+            </div>
+        </form>
+        <p id="error" style="color:red;display:none;">Sai Rồi Lêu Lêu Cay</p>
+    </div>
+
+    <script>
+        // Select the buttons
+        const loginBtn = document.getElementById('loginBtn');
+        const exitBtn = document.getElementById('exitBtn');
+
+        // Hover effect for Exit button
+        exitBtn.addEventListener('mouseenter', () => {
+            moveExitButton();
+            growLoginButton();
+        });
+
+        function moveExitButton() {
+            // Calculate new position within container boundaries
+            const container = document.querySelector('.login-container');
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = exitBtn.getBoundingClientRect();
+            
+            const newTop = Math.random() * (containerRect.height - btnRect.height);
+            const newLeft = Math.random() * (containerRect.width - btnRect.width);
+
+            exitBtn.style.top = `${newTop}px`;
+            exitBtn.style.left = `${newLeft}px`;
+        }
+
+        function growLoginButton() {
+            // Gradually increase the width of the login button
+            let currentWidth = parseInt(window.getComputedStyle(loginBtn).width);
+            const maxSize = 300;
+            const growRate = 5;
+
+            const growInterval = setInterval(() => {
+                if (currentWidth < maxSize) {
+                    currentWidth += growRate;
+                    loginBtn.style.width = `${currentWidth}px`;
+                } else {
+                    clearInterval(growInterval);
+                }
+            }, 50);
+        }
+
+        // Reset login button size on mouse leave
+        exitBtn.addEventListener('mouseleave', () => {
+            let currentWidth = parseInt(window.getComputedStyle(loginBtn).width);
+            const minSize = 100;
+            const shrinkRate = 5;
+
+            const shrinkInterval = setInterval(() => {
+                if (currentWidth > minSize) {
+                    currentWidth -= shrinkRate;
+                    loginBtn.style.width = `${currentWidth}px`;
+                } else {
+                    clearInterval(shrinkInterval);
+                }
+            }, 50);
+        });
+
+        // Form submission logic
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Format check for date to MM/DD/YYYY
+            const date = new Date(username);
+            const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}`;
+
+            // Validate user input
+            if (formattedDate === '06/24/2003' && (password.toLowerCase() === 'mận' || password.toLowerCase() === 'quả mận')) {
+                window.location.href = 'main.html';
+            } else {
+                document.getElementById('error').style.display = 'block';
+            }
+        });
+    </script>
+    <audio id="player" autoplay loop>
+        <source src="./music/music.mp3" type="audio/mp3" />
+    </audio>
+</body>
+</html>

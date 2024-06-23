@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./img/CILKGax.png" />
+    <title>Happy birthday</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/game.css">
+
+</head>
+
+
+<body>
+    <div class="buttons">
+           
+        <!-- Chữ ở menu bạn có thể sửa lại theo ý của bạn -->
+        <a href="main.html" class="btn btn-bir">SINH NHẬT</a>
+        <a href="timeline.html" class="btn btn-timeline">LỜI CHÚC</a>
+        <a href="gallery.html" class="btn btn-gallery">ẢNH KỈ NIỆM</a>
+        <a href="game.html" class="btn btn-gallery">MINI GAME</a>
+    </div>
+
+    <div class="wrap">
+        <div  id="question-list">
+
+        </div>
+    </div>
+    <button id="add-answers-btn" class="btns btn-add">Gửi Cho Anh </button>
+    <div id="notification" class="notification"></div>
+     <!-- Phần nhạc -->
+     <audio id="player" autoplay loop>
+        <source src="./music/jay.mp3" type="audio/mp3" />
+    </audio>
+    <script>
+       
+       const list = [
+            { id: 1, name: 'Màu yêu thích của em là gì?' },
+            { id: 2, name: 'Loại trà sữa yêu thích là gì?' },
+            { id: 3, name: 'Size giày đi là bao nhiêu?' },
+            { id: 4, name: 'Màu son yêu thích là gì?' },
+            { id: 5, name: 'Thích đi chơi hay là thích đi ăn?' },
+            { id: 6, name: 'Món ăn yêu thích là gì?' },
+            { id: 7, name: 'Loại quả yêu thích là gì?' },
+            { id: 8, name: 'Ai là Gà?' },
+        ];
+
+        const questionList = document.getElementById('question-list');
+        const addAnswersBtn = document.getElementById('add-answers-btn');
+        const notification = document.getElementById('notification');
+
+        // Create question items
+        list.forEach((item, index) => {
+            const cartItem = document.createElement('div');
+            cartItem.className = 'cart-item';
+            
+            const cartDesc = document.createElement('p');
+            cartDesc.className = 'cart-desc';
+            cartDesc.textContent = item.name;
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'input';
+            input.placeholder = 'Nhập đáp án vào đây ...';
+
+            cartItem.appendChild(cartDesc);
+            cartItem.appendChild(input);
+            questionList.appendChild(cartItem);
+        });
+
+        // Validate inputs and navigate to gallery.html in the same tab
+        addAnswersBtn.addEventListener('click', () => {
+            const inputs = document.querySelectorAll('.cart-item .input');
+            let allValid = true;
+
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    input.classList.add('input-error');
+                    allValid = false;
+                } else {
+                    input.classList.remove('input-error');
+                }
+            });
+
+            if (allValid) {
+                notification.textContent = 'Thêm thành công!';
+                notification.classList.add('success');
+                notification.classList.remove('error');
+                notification.style.display = 'block';
+
+                // Navigate to gallery.html after a brief delay
+                setTimeout(() => {
+                    window.location.href = 'random.html';
+                }, 2000);
+            } else {
+                notification.textContent = 'Vui lòng điền tất cả các câu trả lời.';
+                notification.classList.add('error');
+                notification.classList.remove('success');
+                notification.style.display = 'block';
+
+                // Hide notification after 2 seconds
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

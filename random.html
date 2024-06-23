@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./img/CILKGax.png" />
+    <title>Spinning Wheel</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <style>
+        .cs {
+            background: url("../img/xanh.jpg");
+            display: flex;
+            background-repeat: no-repeat;
+            background-size: cover;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e29fbb;
+            font-family: Arial, sans-serif;
+        }
+        .wheel-container {
+            position: relative;
+            width: 380px;
+            height: 380px;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 400;
+
+        }
+        .pointer {
+            position: absolute;
+            top: 50%;
+            left: 94%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid #000;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+        }
+        .spin-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            border: none;
+            background:linear-gradient(to right, #13547a,#80d0c7);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+<body class="cs">
+    <div class="buttons">
+        <a href="index.html" class="btn btn-bir">SINH NHẬT</a>
+        <a href="timeline.html" class="btn btn-timeline">LỜI CHÚC</a>
+        <a href="gallery.html" class="btn btn-gallery">ẢNH KỈ NIỆM</a>
+        <a href="game.html" class="btn btn-gallery">MINI GAME</a>
+    </div>
+
+    <div class="wheel-container">
+        <canvas id="wheel" width="380" height="380"></canvas>
+        <div class="pointer"></div>
+    </div>
+    <button class="spin-button" onclick="spinWheel()">Quay</button>
+     <!-- Phần nhạc -->
+     <audio id="player" autoplay loop>
+        <source src="./music/jay.mp3" type="audio/mp3" />
+    </audio>
+    <script>
+        const gifts = [
+            { id: 1, name: 'Trà Sữa' },
+            { id: 2, name: 'Giày Tự Chọn' },
+            { id: 3, name: 'Nhà Nghỉ Trọ' },
+            { id: 4, name: 'Áo '},
+            { id: 5, name: 'Đồng Hồ' },
+            { id: 6, name: 'Chúc may mắn' },
+            { id: 7, name: 'Búp bê' },
+            { id: 8, name: '5 lốp' }
+        ];
+
+        const wheel = document.getElementById('wheel');
+        const ctx = wheel.getContext('2d');
+        const numSegments = gifts.length;
+        const segmentAngle = 360 / numSegments;
+
+        function drawWheel() {
+            const radius = wheel.width / 2;
+            ctx.clearRect(0, 0, wheel.width, wheel.height);
+
+            gifts.forEach((gift, index) => {
+                const angle = segmentAngle * index * Math.PI / 180;
+                const nextAngle = segmentAngle * (index + 1) * Math.PI / 180;
+                
+                // Draw segment
+                ctx.beginPath();
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius, angle, nextAngle);
+                ctx.fillStyle = (index % 2 === 0) ? '#ec82ae' : '#e29fbb';
+                ctx.fill();
+                ctx.stroke();
+
+                // Draw text
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(angle + (segmentAngle / 2) * Math.PI / 180);
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#000';
+                ctx.font = '16px Arial';
+                ctx.fillText(gift.name, radius / 2, 0);
+                ctx.restore();
+            });
+        }
+
+       // Define a global variable to track whether the wheel has been spun
+let wheelSpun = false;
+
+function spinWheel() {
+    // Check if the wheel has already been spun
+    if (wheelSpun) {
+        return; // Exit the function if already spun
+    }
+
+    const targetGift = 'Giày Tự Chọn';
+
+    // Find the index of the target gift in the gifts array
+    const targetIndex = gifts.findIndex(gift => gift.name === targetGift);
+
+    // Calculate the angle to spin to land on the target gift
+    const targetAngle = 360 - (targetIndex * segmentAngle + segmentAngle / 2);
+
+    // Generate a random offset to add some realism
+    const randomOffset = Math.random() * 10 + 5; // Adjust the range as needed
+
+    // Calculate the exact angle for one complete spin plus the random offset
+    const randomAngle = 360 * 5 + targetAngle + randomOffset;
+
+    const spinDuration = 4; // duration in seconds for one complete spin
+
+    // Add spinning animation
+    wheel.style.transition = `transform ${spinDuration}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
+    wheel.style.transform = `rotate(${randomAngle}deg)`; // rotate to the final angle
+
+    // Disable the spin button
+    const spinButton = document.querySelector('.spin-button');
+    spinButton.disabled = true;
+    spinButton.style.cursor = 'not-allowed'; // change cursor to not-allowed
+
+    // Set wheelSpun to true to prevent further spins
+    wheelSpun = true;
+
+    // Reset animation after completion
+    setTimeout(() => {
+        wheel.style.transition = ''; // remove transition to stop animation
+        wheel.style.transform = `rotate(${targetAngle}deg)`; // set final resting angle
+
+        // Determine selected gift
+        const selectedIndex = Math.floor((360 - targetAngle % 360) / segmentAngle);
+        const selectedGift = gifts[selectedIndex];
+
+        // Check if the selected gift matches the target gift
+        if (selectedGift.name === targetGift) {
+            alert(`Chúc mừng! Bạn đã quay được: ${selectedGift.name}`);
+        } else {
+            alert(`Bạn đã quay được: ${selectedGift.name}`);
+        }
+    }, spinDuration * 1000);
+}
+
+
+
+        // Add keyboard support (Ctrl+Enter)
+        document.addEventListener('keydown', (event) => {
+            if (event.ctrlKey && event.key === 'Enter') {
+                spinWheel();
+            }
+        });
+
+        // Draw the wheel initially
+        drawWheel();
+    </script>
+</body>
+</html>

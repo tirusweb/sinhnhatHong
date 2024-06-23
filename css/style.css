@@ -1,0 +1,115 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400&display=swap");
+
+html {
+    scroll-behavior: smooth;
+    font-family: "Roboto", sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+.page__main {
+    /* Ảnh nền của trang đầu tiên nếu bạn muốn đổi thì đổi tại đây */
+    background-image: url("../img/back2.avif");
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-position-y: -14rem;
+}
+.buttons {
+    display: flex;
+    column-gap: 2rem;
+    padding: 1rem;
+}
+
+.btn-bir:hover {
+    background-position: right center;
+    color: #2fc1e6;
+    text-decoration: none;
+}
+
+.btn-bir {
+    background:linear-gradient(to right, #f2e7f8,#cac2ff);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: #000;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    font-weight: 600;
+    display: block;
+}
+
+.btn-timeline {
+    background:linear-gradient(to right, #f2e7f8,#cac2ff);
+
+}
+.btn-timeline {
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+.btn-timeline:hover {
+    background-position: right center; 
+    color: #2fc1e6;
+    text-decoration: none;
+}
+
+.btn-gallery {
+    background:linear-gradient(to right, #f2e7f8,#cac2ff);
+}
+.btn-gallery {
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+.btn-gallery:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #2fc1e6;
+    text-decoration: none;
+}
+
+.cover {
+    width: 200px;
+    height: 200px;
+    box-shadow: 0 0 30px #eee;
+    position: absolute;
+    margin-top: 15%;
+    right: 28%;
+    border-radius: 50%;
+    border: 5px solid rgb(238, 239, 240);
+}
+
+.cover1 {
+    width: 200px;
+    height: 200px;
+    box-shadow: 0 0 30px #eee;
+    position: absolute;
+    margin-top: 17%;
+    right: 14%;
+    border-radius: 50%;
+    border: 5px solid rgb(232, 242, 247);
+}
